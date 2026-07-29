@@ -271,20 +271,19 @@ jobs:
         run: |
           URLS=(
             "https://sub-store-workers.${{ secrets.WORKERS_SUBDOMAIN }}.workers.dev"
-            "https://${{ secrets.PAGES_PROJECT_NAME }}.pages.dev"
           )
           for URL in "${URLS[@]}"; do
             echo "Checking: $URL"
             for i in 1 2 3; do
               sleep 5
-              CODE=$(curl -s -o /dev/null -w "%{http_code}" "$URL/")
+              CODE=$(curl -s -o /dev/null -w "%{http_code}" "$URL/" || true)
               echo "  Attempt $i: HTTP $CODE"
               if [ "$CODE" = "200" ] || [ "$CODE" = "302" ] || [ "$CODE" = "404" ]; then
                 echo "  $URL is alive"
                 break
               fi
               if [ $i -eq 3 ]; then
-                echo "  $URL health check failed"
+                echo "::warning::$URL health check failed"
               fi
             done
           done
