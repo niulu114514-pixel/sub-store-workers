@@ -1,9 +1,12 @@
 name: Sync Upstream Sub-Store
 
 on:
-  schedule:
-    # 每天 UTC 16:00 = 北京 00:00
-    - cron: '0 16 * * *'
+  # 定时同步已关闭（2026-11-17）：上游自动同步的 Run 一直失败，噪音大于收益。
+  # 需要时可在 Actions 页面手动点击「Run workflow」触发（见下方 workflow_dispatch）。
+  # 如需恢复定时：把下面三行取消注释即可。
+  # schedule:
+  #   # 每天 UTC 16:00 = 北京 00:00
+  #   - cron: '0 16 * * *'
   workflow_dispatch:
     inputs:
       force:
